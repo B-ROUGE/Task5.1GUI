@@ -1,0 +1,96 @@
+from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QApplication, QMainWindow
+from gpiozero import LED
+import sys
+
+ledRed = LED(17)
+ledGreen = LED(27)
+ledBlue = LED(22)
+
+class MyWindow(QMainWindow):    
+    def __init__(self):
+        super(MyWindow, self).__init__()
+        self.setGeometry(200, 200, 300, 300)
+        self.setWindowTitle("SIT210 Task 5.1P")
+        self.initUI()
+    
+    def initUI(self):
+        self.label = QtWidgets.QLabel(self)
+        self.label.setText("Select a button to toggle the LED")
+        self.label.move(10, 20)
+        
+        self.statusRed = QtWidgets.QLabel(self)
+        self.statusRed.setText("RED LED status:     Off")
+        self.statusRed.move(10, 120)
+        self.statusGreen = QtWidgets.QLabel(self)
+        self.statusGreen.setText("GREEN LED status: Off")
+        self.statusGreen.move(10, 140)
+        self.statusBlue = QtWidgets.QLabel(self)
+        self.statusBlue.setText("BLUE LED status:    Off")
+        self.statusBlue.move(10, 160)
+            
+        self.buttonRed = QtWidgets.QPushButton(self)
+        self.buttonRed.setText("RED On/Off")
+        self.buttonRed.clicked.connect(self.clickedRed)
+        self.buttonRed.move(0, 70)
+        
+        self.buttonGreen = QtWidgets.QPushButton(self)
+        self.buttonGreen.setText("GREEN On/Off")
+        self.buttonGreen.clicked.connect(self.clickedGreen)
+        self.buttonGreen.move(100, 70)
+        
+        self.buttonBlue = QtWidgets.QPushButton(self)
+        self.buttonBlue.setText("BLUE On/Off")
+        self.buttonBlue.clicked.connect(self.clickedBlue)
+        self.buttonBlue.move(200, 70)
+        
+        self.buttonExit = QtWidgets.QPushButton(self)
+        self.buttonExit.setText("Click to exit")
+        self.buttonExit.clicked.connect(self.close)
+        self.buttonExit.move(100, 200)
+        
+        self.update()
+        
+    def clickedRed(self):        
+        ledRed.toggle()
+        if ledRed.is_lit:
+            print("Red LED: On")
+            self.statusRed.setText("RED LED status:     On")
+        elif not ledRed.is_lit:
+            print("Red LED: Off")
+            self.statusRed.setText("RED LED status:     Off")
+        self.update()
+        
+    def clickedGreen(self):        
+        ledGreen.toggle()
+        if ledGreen.is_lit:
+            print("Green LED: on")
+            self.statusGreen.setText("GREEN LED status: On")
+        elif not ledGreen.is_lit:
+            print("Green LED: off")
+            self.statusGreen.setText("GREEN LED status: Off")
+        self.update()
+        
+    def clickedBlue(self):        
+        ledBlue.toggle()
+        if ledBlue.is_lit:
+            print("Blue LED: on")
+            self.statusBlue.setText("BLUE LED status:    On")
+        elif not ledBlue.is_lit:
+            print("Blue LED: off")
+            self.statusBlue.setText("BLUE LED status:    Off")
+        self.update()
+        
+    def update(self):
+        self.label.adjustSize()
+        self.statusRed.adjustSize()
+        self.statusGreen.adjustSize()
+        self.statusBlue.adjustSize()
+            
+def window():
+    app = QApplication (sys.argv)
+    win = MyWindow()
+    win.show()
+    sys.exit(app.exec())
+
+window()
